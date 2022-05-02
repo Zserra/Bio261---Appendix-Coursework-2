@@ -1,0 +1,56 @@
+r <- 0.5    # Parameter for growth rate
+K <- 1000    # parameter for maximum capacity 
+Tmax <- 100   # Maximum simulation time 
+ 
+N <- matrix(0, nrow = Tmax, ncol = 1) # Pre-allocate population vector 
+N[1] <- 1       # Initialise population size 
+ 
+# Simulate Ricker population growth over time 
+for (t in 1:(Tmax-1)) { 
+ N[t+1] <- N[t]*exp(r*(1-N[t]/K)) 
+} 
+ 
+plot(N, type = "l", lwd = 2, xlab = "Time, t", ylab = "Population size, 
+N(t)")
+
+plot(diff(N), type = "l", lwd = 2, xlab = "Time ,t", ylab = "Population 
+growth rate, N(t+1) – N(t)")
+
+plot(diff(log(N)), type = "l", lwd = 2, xlab = "Time ,t", ylab = "Percapita growth rate, ln( N(t+1) / N(t) )")
+
+# current vs future population sizes = N[t] vs N[t+1]
+plot(N[1:(Tmax-1)], N[2:Tmax], pch = 16, xlab = "Current Population 
+Size, N[t]", ylab = "Future Population Size, N[t+1]")
+#density dependent functional form for per-capita growth
+plot(N[1:(Tmax-1)], diff(log(N)), pch = 16, xlab = "Population size, 
+N(t)", ylab = "per-capita growth rate, log( N(t+1)/N(t) )")
+abline(r, -r/K, lwd = 2, lty = 2)
+r <- 0.5 # Parameter for growth rate
+K <- 1000 # Parameter for maximum capacity
+n <- seq(0, 1.5*K, length.out = 101) # Vector for the population sizes
+f.n <- exp(r*(1-n/K)) # Vector for the population growth rates
+pgr <- log(f.n) # Vector for the per-capita growth rates
+# Map of population growth function, then add grid lines
+plot(n, n*f.n, type = "l", lwd = 2, xlab = "Population size, N[t]", ylab 
+= "Population growth function, N[t+1] = N[t] f(N[t])")
+grid()
+# Map of per-capita growth rates, then add a horizontal, dashed line
+plot(n, pgr, type = "l", lwd = 2, col = "blue", , xlab = "Population 
+size, N[t]", ylab = "Population growth rate")
+abline(h = 0)
+r.values <- seq(0.2, 3.5, length.out = 101) # r-values read
+K <- 1000 # Carrying Capacity
+Tmax <- 500 # Length of simulations
+N <- matrix(0, length(r.values), Tmax) 
+N[,1] <- 1 # Initiate all N[1] = 1
+for (i in 1:length(r.values)){
+r <- r.values[i] # Select the i-th r-value to examine
+for (t in 1:(Tmax-1)) {
+N[i, t+1] <- N[i, t]*exp(r*(1- N[i, t]/K))
+}
+}
+plot(N[1,], type = “l”, ylim = c(0, 70)) # Changes y-axis limits
+lines(N[10,], col = “red”) 
+lines(N[101,], col = “blue) # labels axis
+matplot(r.values, N[, 401:500], pch = 16, cex = 0.25, xlab = "r-value", 
+ylab = "Population size over time")
